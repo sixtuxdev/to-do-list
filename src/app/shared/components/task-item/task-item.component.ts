@@ -7,67 +7,8 @@ import { Task } from '../../../core/interfaces/task.interface';
   selector: 'app-task-item',
   standalone: true,
   imports: [IonicModule, CommonModule],
-  template: `
-    <ion-item-sliding #slidingItem>
-      <ion-item [button]="true" (click)="onEdit()" class="task-item" [class.completed]="task.completed">
-        
-        <ion-checkbox 
-          slot="start" 
-          [checked]="task.completed" 
-          (ionChange)="onToggleCompletion($event)"
-          (click)="$event.stopPropagation()">
-        </ion-checkbox>
-        
-        <ion-label>
-          <h2 [class.strikethrough]="task.completed">{{ task.title }}</h2>
-          <p *ngIf="task.description" class="ion-text-wrap">{{ task.description }}</p>
-          
-          <div class="task-meta">
-            <ion-badge [color]="getPriorityColor(task.priority)" class="priority-badge">
-              {{ task.priority | uppercase }}
-            </ion-badge>
-            
-            <ion-note *ngIf="task.dueDate" class="due-date" [color]="isOverdue(task.dueDate) && !task.completed ? 'danger' : 'medium'">
-              <ion-icon name="calendar-outline"></ion-icon>
-              {{ task.dueDate | date:'mediumDate' }}
-            </ion-note>
-          </div>
-        </ion-label>
-
-      </ion-item>
-
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="onDelete(slidingItem)">
-          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  `,
-  styles: [`
-    .strikethrough {
-      text-decoration: line-through;
-      color: var(--ion-color-medium);
-    }
-    .task-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .priority-badge {
-      font-size: 10px;
-      padding: 4px 6px;
-    }
-    .due-date {
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .completed ion-label {
-      opacity: 0.7;
-    }
-  `],
+  templateUrl: './task-item.component.html',
+  styleUrls: ['./task-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskItemComponent {

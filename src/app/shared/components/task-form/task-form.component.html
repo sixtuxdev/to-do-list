@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ task ? 'Editar Tarea' : 'Nueva Tarea' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    
+    <ion-item class="form-item">
+      <ion-label position="stacked">Título <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input formControlName="title" placeholder="Ej. Comprar víveres" clearInput></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+      El título es obligatorio.
+    </ion-note>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea formControlName="description" placeholder="Detalles de la tarea..." autoGrow></ion-textarea>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Prioridad</ion-label>
+      <ion-select formControlName="priority" interface="popover">
+        <ion-select-option value="low">Baja</ion-select-option>
+        <ion-select-option value="medium">Media</ion-select-option>
+        <ion-select-option value="high">Alta</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Fecha límite</ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      
+      <ion-modal [keepContentsMounted]="true">
+        <ion-datetime id="datetime" formControlName="dueDate" presentation="date" [showDefaultButtons]="true" doneText="Aceptar" cancelText="Cancelar"></ion-datetime>
+      </ion-modal>
+    </ion-item>
+
+    <ion-item class="form-item" lines="none" *ngIf="enableCategories$ | async">
+      <ion-label position="stacked">Categoría</ion-label>
+      <app-category-selector formControlName="categoryId"></app-category-selector>
+    </ion-item>
+
+    <div class="ion-margin-top action-buttons">
+      <ion-button expand="block" type="submit" [disabled]="taskForm.invalid">
+        {{ task ? 'Actualizar' : 'Guardar' }} Tarea
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

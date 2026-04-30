@@ -11,74 +11,8 @@ import { Router } from '@angular/router';
   selector: 'app-categories',
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
-  template: `
-    <ion-header [translucent]="true">
-      <ion-toolbar color="primary">
-        <ion-buttons slot="start">
-          <ion-button (click)="goBack()">
-            <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-title>Categorías</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="openCategoryDialog()">
-            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content [fullscreen]="true" class="ion-padding">
-      <ion-list>
-        <ion-item-sliding *ngFor="let category of categories$ | async; trackBy: trackByFn" #slidingItem>
-          
-          <ion-item [button]="true" (click)="openCategoryDialog(category)">
-            <ion-icon [name]="category.icon" slot="start" [style.color]="category.color"></ion-icon>
-            <ion-label>
-              <h2>{{ category.name }}</h2>
-            </ion-label>
-          </ion-item>
-
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="confirmDelete(category.id, slidingItem)">
-              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-
-        </ion-item-sliding>
-      </ion-list>
-
-      <div class="empty-state" *ngIf="(categories$ | async)?.length === 0">
-        <ion-icon name="folder-open-outline" color="medium"></ion-icon>
-        <h3>Sin Categorías</h3>
-        <p>Crea tu primera categoría para organizar las tareas.</p>
-      </div>
-
-    </ion-content>
-  `,
-  styles: [`
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 60%;
-      text-align: center;
-      color: var(--ion-color-medium);
-      
-      ion-icon {
-        font-size: 80px;
-        margin-bottom: 16px;
-        opacity: 0.5;
-      }
-      
-      h3 {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--ion-color-dark);
-      }
-    }
-  `],
+  templateUrl: './categories.page.html',
+  styleUrls: ['./categories.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoriesPage implements OnInit {

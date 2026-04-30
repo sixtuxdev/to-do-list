@@ -1,0 +1,23 @@
+.strikethrough {
+  text-decoration: line-through;
+  color: var(--ion-color-medium);
+}
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.priority-badge {
+  font-size: 10px;
+  padding: 4px 6px;
+}
+.due-date {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.completed ion-label {
+  opacity: 0.7;
+}
