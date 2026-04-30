@@ -34,10 +34,29 @@
 
     <ion-item class="form-item">
       <ion-label position="stacked">Fecha límite</ion-label>
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
-      
-      <ion-modal [keepContentsMounted]="true">
-        <ion-datetime id="datetime" formControlName="dueDate" presentation="date" [showDefaultButtons]="true" doneText="Aceptar" cancelText="Cancelar"></ion-datetime>
+      <div class="date-trigger-container">
+        <div id="date-picker-trigger" class="date-trigger">
+          <ion-icon name="calendar-outline" color="primary"></ion-icon>
+          <ion-text [color]="taskForm.get('dueDate')?.value ? 'dark' : 'medium'">
+            {{ taskForm.get('dueDate')?.value ? (taskForm.get('dueDate')?.value | date:'mediumDate') : 'Sin fecha límite' }}
+          </ion-text>
+        </div>
+        <ion-button *ngIf="taskForm.get('dueDate')?.value" fill="clear" color="medium" (click)="clearDate($event)" class="clear-date-btn">
+          <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <ion-modal trigger="date-picker-trigger" class="datetime-modal">
+        <ng-template>
+          <ion-datetime 
+            presentation="date" 
+            [value]="taskForm.get('dueDate')?.value"
+            (ionChange)="onDateChange($event)"
+            [showDefaultButtons]="true" 
+            doneText="Aceptar" 
+            cancelText="Cancelar">
+          </ion-datetime>
+        </ng-template>
       </ion-modal>
     </ion-item>
 

@@ -55,6 +55,19 @@ export class TaskFormComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  onDateChange(event: any) {
+    if (event.detail.value) {
+      this.taskForm.patchValue({ dueDate: event.detail.value });
+      this.taskForm.markAsDirty();
+    }
+  }
+
+  clearDate(event: Event) {
+    event.stopPropagation();
+    this.taskForm.patchValue({ dueDate: null });
+    this.taskForm.markAsDirty();
+  }
+
   onSubmit() {
     if (this.taskForm.valid) {
       this.modalCtrl.dismiss(this.taskForm.value, 'confirm');

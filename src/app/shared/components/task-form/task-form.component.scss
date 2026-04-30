@@ -10,3 +10,34 @@ ion-note {
 .action-buttons {
   margin-top: 32px;
 }
+
+.date-trigger-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8px;
+  padding-bottom: 8px;
+}
+
+.date-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.clear-date-btn {
+  margin: 0;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+ion-modal.datetime-modal {
+  --width: fit-content;
+  --height: fit-content;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
