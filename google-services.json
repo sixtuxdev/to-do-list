@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "256781483356",
+    "project_id": "to-do-list-483db",
+    "storage_bucket": "to-do-list-483db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256781483356:android:03c19f807b4dc89f719599",
+        "android_client_info": {
+          "package_name": "com.accenture.todolistSR"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOLlHcX_y7DGH_6To42eB_77CvaSiVXXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
