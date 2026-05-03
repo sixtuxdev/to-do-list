@@ -68,14 +68,6 @@ export class TasksPage implements OnInit {
     this.searchQuery$.next(event.target.value || '');
   }
 
-  getPendingCount(tasks: Task[] | null): number {
-    return tasks ? tasks.filter(t => !t.completed).length : 0;
-  }
-
-  getCompletedCount(tasks: Task[] | null): number {
-    return tasks ? tasks.filter(t => t.completed).length : 0;
-  }
-
   trackByFn(index: number, task: Task): string {
     return task.id;
   }
