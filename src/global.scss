@@ -34,4 +34,88 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+// @import "@ionic/angular/css/palettes/dark.system.css"; // Commented out to use custom ThemeService with 'dark' class instead
+
+/* ----------------------------------------------------------------------------
+ * CUSTOM GLOBAL STYLES & UTILITIES
+ * ---------------------------------------------------------------------------- */
+
+/* Typography Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global Resets */
+* {
+  font-family: var(--ion-font-family);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Common Layout Utils */
+.app-glass-header {
+  --background: rgba(var(--ion-color-primary-rgb), 0.9) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: none;
+}
+
+.app-gradient-header {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  color: white;
+}
+
+/* Premium Card Styles */
+.premium-card {
+  background: var(--app-card-bg);
+  border-radius: var(--app-radius-lg);
+  box-shadow: var(--app-shadow-sm);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Floating Action Button (FAB) */
+ion-fab-button {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --box-shadow: var(--app-shadow-primary);
+  transition: transform 0.2s;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+/* Modal Customization */
+ion-modal {
+  --border-radius: var(--app-radius-xl) var(--app-radius-xl) 0 0;
+  &.bottom-sheet {
+    align-items: flex-end;
+  }
+}
+
+/* Base Ionic Overrides for cleaner look */
+ion-item {
+  --border-width: 0;
+  --inner-border-width: 0;
+  --background: transparent;
+}
+
+ion-list {
+  background: transparent;
+}

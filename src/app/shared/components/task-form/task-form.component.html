@@ -1,72 +1,77 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>{{ task ? 'Editar Tarea' : 'Nueva Tarea' }}</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <ion-title class="modal-title">{{ task ? 'Editar Tarea' : 'Nueva Tarea' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Cerrar</ion-button>
+      <ion-button (click)="dismiss()" class="close-btn">
+        <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="premium-form">
     
-    <ion-item class="form-item">
-      <ion-label position="stacked">Título <ion-text color="danger">*</ion-text></ion-label>
-      <ion-input formControlName="title" placeholder="Ej. Comprar víveres" clearInput></ion-input>
-    </ion-item>
-    <ion-note color="danger" *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
-      El título es obligatorio.
-    </ion-note>
+    <div class="form-group">
+      <ion-item class="premium-input-item" lines="none">
+        <ion-input formControlName="title" placeholder="¿Qué necesitas hacer?" clearInput></ion-input>
+      </ion-item>
+      <ion-note color="danger" class="error-msg" *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+        El título es obligatorio.
+      </ion-note>
+    </div>
 
-    <ion-item class="form-item">
-      <ion-label position="stacked">Descripción</ion-label>
-      <ion-textarea formControlName="description" placeholder="Detalles de la tarea..." autoGrow></ion-textarea>
-    </ion-item>
+    <div class="form-group">
+      <ion-item class="premium-input-item" lines="none">
+        <ion-textarea formControlName="description" placeholder="Añade detalles o notas..." autoGrow rows="3"></ion-textarea>
+      </ion-item>
+    </div>
 
-    <ion-item class="form-item">
-      <ion-label position="stacked">Prioridad</ion-label>
-      <ion-select formControlName="priority" interface="popover">
-        <ion-select-option value="low">Baja</ion-select-option>
-        <ion-select-option value="medium">Media</ion-select-option>
-        <ion-select-option value="high">Alta</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item class="form-item">
-      <ion-label position="stacked">Fecha límite</ion-label>
-      <div class="date-trigger-container">
-        <div id="date-picker-trigger" class="date-trigger">
-          <ion-icon name="calendar-outline" color="primary"></ion-icon>
-          <ion-text [color]="taskForm.get('dueDate')?.value ? 'dark' : 'medium'">
-            {{ taskForm.get('dueDate')?.value ? (taskForm.get('dueDate')?.value | date:'mediumDate') : 'Sin fecha límite' }}
-          </ion-text>
-        </div>
-        <ion-button *ngIf="taskForm.get('dueDate')?.value" fill="clear" color="medium" (click)="clearDate($event)" class="clear-date-btn">
-          <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
-        </ion-button>
+    <div class="form-row">
+      <div class="form-group half-width">
+        <label class="input-label">Prioridad</label>
+        <ion-item class="premium-select-item" lines="none">
+          <ion-icon name="flag-outline" slot="start" [color]="taskForm.get('priority')?.value === 'high' ? 'danger' : taskForm.get('priority')?.value === 'medium' ? 'warning' : 'success'"></ion-icon>
+          <ion-select formControlName="priority" interface="popover">
+            <ion-select-option value="low">Baja</ion-select-option>
+            <ion-select-option value="medium">Media</ion-select-option>
+            <ion-select-option value="high">Alta</ion-select-option>
+          </ion-select>
+        </ion-item>
       </div>
 
-      <ion-modal trigger="date-picker-trigger" class="datetime-modal">
-        <ng-template>
-          <ion-datetime 
-            presentation="date" 
-            [value]="taskForm.get('dueDate')?.value"
-            (ionChange)="onDateChange($event)"
-            [showDefaultButtons]="true" 
-            doneText="Aceptar" 
-            cancelText="Cancelar">
-          </ion-datetime>
-        </ng-template>
-      </ion-modal>
-    </ion-item>
+      <div class="form-group half-width">
+        <label class="input-label">Fecha Límite</label>
+        <div class="premium-date-trigger" id="date-picker-trigger">
+          <ion-icon name="calendar-outline" color="primary"></ion-icon>
+          <span class="date-text" [class.has-value]="taskForm.get('dueDate')?.value">
+            {{ taskForm.get('dueDate')?.value ? (taskForm.get('dueDate')?.value | date:'MMM d') : 'Sin fecha' }}
+          </span>
+          <ion-icon name="close-circle" class="clear-date" *ngIf="taskForm.get('dueDate')?.value" (click)="clearDate($event)"></ion-icon>
+        </div>
 
-    <ion-item class="form-item" lines="none" *ngIf="enableCategories$ | async">
-      <ion-label position="stacked">Categoría</ion-label>
+        <ion-modal trigger="date-picker-trigger" class="datetime-modal premium-datetime-modal">
+          <ng-template>
+            <ion-datetime 
+              presentation="date" 
+              [value]="taskForm.get('dueDate')?.value"
+              (ionChange)="onDateChange($event)"
+              [showDefaultButtons]="true" 
+              doneText="Aceptar" 
+              cancelText="Cancelar">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+    </div>
+
+    <div class="form-group" *ngIf="enableCategories$ | async">
+      <label class="input-label">Categoría</label>
       <app-category-selector formControlName="categoryId"></app-category-selector>
-    </ion-item>
+    </div>
 
-    <div class="ion-margin-top action-buttons">
-      <ion-button expand="block" type="submit" [disabled]="taskForm.invalid">
+    <div class="action-buttons">
+      <ion-button expand="block" shape="round" type="submit" class="submit-btn" [disabled]="taskForm.invalid">
         {{ task ? 'Actualizar' : 'Guardar' }} Tarea
       </ion-button>
     </div>

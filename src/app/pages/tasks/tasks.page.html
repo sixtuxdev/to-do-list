@@ -1,85 +1,114 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Mis Tareas</ion-title>
+<ion-header class="ion-no-border app-gradient-header">
+  <ion-toolbar color="transparent">
+    <ion-title class="ion-text-start">
+      <div class="header-title">
+        <span class="greeting">Hola,</span>
+        <span class="subtitle">Tus Tareas</span>
+      </div>
+    </ion-title>
     <ion-buttons slot="end">
-      <ion-button *ngIf="enableCategories$ | async" (click)="goToCategories()">
-        <ion-icon slot="icon-only" name="folder-open-outline"></ion-icon>
+      <ion-button (click)="themeService.toggleTheme()">
+        <ion-icon slot="icon-only" [name]="(themeService.isDarkMode$ | async) ? 'sunny-outline' : 'moon-outline'"></ion-icon>
       </ion-button>
-      <ion-button (click)="openTaskModal()">
-        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      <ion-button *ngIf="enableCategories$ | async" (click)="goToCategories()">
+        <ion-icon slot="icon-only" name="grid-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar color="primary">
+  
+  <div class="search-container ion-padding-horizontal ion-padding-bottom">
     <ion-searchbar 
+      class="premium-searchbar"
       animated="true" 
       placeholder="Buscar tareas..." 
+      searchIcon="search-outline"
       (ionInput)="onSearch($event)"
       [debounce]="300">
     </ion-searchbar>
-  </ion-toolbar>
+  </div>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding-vertical">
+<ion-content [fullscreen]="true" class="ion-padding">
   
+  <!-- Stats Summary -->
+  <div class="stats-container fade-in" *ngIf="filteredTasks$ | async as tasks">
+    <div class="stat-card">
+      <div class="stat-icon pending"><ion-icon name="time-outline"></ion-icon></div>
+      <div class="stat-info">
+        <h3>Pendientes</h3>
+        <p>{{ getPendingCount(tasks) }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon completed"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+      <div class="stat-info">
+        <h3>Completadas</h3>
+        <p>{{ getCompletedCount(tasks) }}</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Category Filter -->
-  <div class="category-filter-container" *ngIf="enableCategories$ | async">
-    <ion-chip 
-      [outline]="(categoryFilter$ | async) !== null"
-      [color]="(categoryFilter$ | async) === null ? 'primary' : 'medium'"
+  <div class="category-filter-container fade-in" *ngIf="enableCategories$ | async">
+    <div class="category-chip"
+      [class.active]="(categoryFilter$ | async) === null"
       (click)="setCategoryFilter(null)">
-      <ion-label>Todas</ion-label>
-    </ion-chip>
-    <ion-chip 
+      <ion-icon name="apps-outline"></ion-icon>
+      <span>Todas</span>
+    </div>
+    
+    <div class="category-chip"
       *ngFor="let category of categories$ | async"
-      [outline]="(categoryFilter$ | async) !== category.id"
-      [style.--ion-color-primary]="category.color"
-      [color]="(categoryFilter$ | async) === category.id ? 'primary' : 'medium'"
+      [class.active]="(categoryFilter$ | async) === category.id"
+      [style.--cat-color]="category.color"
       (click)="setCategoryFilter(category.id)">
-      <ion-icon [name]="category.icon"></ion-icon>
-      <ion-label>{{ category.name }}</ion-label>
-    </ion-chip>
+      <ion-icon [name]="category.icon" [style.color]="(categoryFilter$ | async) === category.id ? 'white' : category.color"></ion-icon>
+      <span>{{ category.name }}</span>
+    </div>
   </div>
 
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="(filteredTasks$ | async)?.length === 0">
-    <ion-icon name="list-circle-outline" color="medium"></ion-icon>
-    <h3>No hay tareas</h3>
-    <p>Agrega una nueva tarea para comenzar.</p>
-    <ion-button fill="outline" (click)="openTaskModal()">Crear Tarea</ion-button>
+  <div class="empty-state fade-in" *ngIf="(filteredTasks$ | async)?.length === 0">
+    <div class="empty-icon-container">
+      <ion-icon name="documents-outline"></ion-icon>
+    </div>
+    <h3>Todo en orden</h3>
+    <p>No tienes tareas pendientes en este momento.</p>
+    <ion-button shape="round" class="create-btn" (click)="openTaskModal()">
+      <ion-icon slot="start" name="add-outline"></ion-icon>
+      Crear Tarea
+    </ion-button>
   </div>
 
   <!-- Task List -->
-  <ion-list *ngIf="(filteredTasks$ | async)?.length! > 0">
-    <ion-list-header>
-      <ion-label>Pendientes</ion-label>
-    </ion-list-header>
-    
-    <ng-container *ngFor="let task of filteredTasks$ | async; trackBy: trackByFn">
-      <app-task-item 
-        *ngIf="!task.completed"
-        [task]="task" 
-        (edit)="openTaskModal(task)"
-        (delete)="confirmDelete($event)"
-        (toggleComplete)="toggleComplete($event)">
-      </app-task-item>
-    </ng-container>
+  <div class="task-list-container" *ngIf="(filteredTasks$ | async)?.length! > 0">
+    <h2 class="section-title">Tareas Pendientes</h2>
+    <div class="task-grid">
+      <ng-container *ngFor="let task of filteredTasks$ | async; trackBy: trackByFn">
+        <app-task-item 
+          *ngIf="!task.completed"
+          [task]="task" 
+          (edit)="openTaskModal(task)"
+          (delete)="confirmDelete($event)"
+          (toggleComplete)="toggleComplete($event)">
+        </app-task-item>
+      </ng-container>
+    </div>
 
-    <!-- Completed Tasks (could be folded in a real app) -->
-    <ion-list-header class="ion-margin-top">
-      <ion-label color="medium">Completadas</ion-label>
-    </ion-list-header>
-
-    <ng-container *ngFor="let task of filteredTasks$ | async; trackBy: trackByFn">
-      <app-task-item 
-        *ngIf="task.completed"
-        [task]="task" 
-        (edit)="openTaskModal(task)"
-        (delete)="confirmDelete($event)"
-        (toggleComplete)="toggleComplete($event)">
-      </app-task-item>
-    </ng-container>
-  </ion-list>
+    <!-- Completed Tasks -->
+    <h2 class="section-title ion-margin-top">Completadas</h2>
+    <div class="task-grid">
+      <ng-container *ngFor="let task of filteredTasks$ | async; trackBy: trackByFn">
+        <app-task-item 
+          *ngIf="task.completed"
+          [task]="task" 
+          (edit)="openTaskModal(task)"
+          (delete)="confirmDelete($event)"
+          (toggleComplete)="toggleComplete($event)">
+        </app-task-item>
+      </ng-container>
+    </div>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="openTaskModal()">

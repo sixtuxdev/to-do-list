@@ -1,21 +1,117 @@
+.categories-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.premium-sliding-item {
+  margin-bottom: 12px;
+  border-radius: var(--app-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--app-shadow-sm);
+}
+
+.category-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+
+.category-icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--cat-color-rgb, 99, 102, 241), 0.1); /* Fallback to primary */
+  margin-right: 16px;
+  
+  /* Use CSS variable with opacity fallback */
+  background: color-mix(in srgb, var(--cat-color) 15%, transparent);
+  
+  ion-icon {
+    font-size: 24px;
+    color: var(--cat-color);
+  }
+}
+
+.category-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--app-text-color);
+}
+
+.edit-icon {
+  font-size: 20px;
+  color: var(--app-text-muted);
+  opacity: 0.5;
+}
+
+.delete-option {
+  .option-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 16px;
+    
+    ion-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    
+    span {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60%;
+  height: 50vh;
   text-align: center;
-  color: var(--ion-color-medium);
   
-  ion-icon {
-    font-size: 80px;
-    margin-bottom: 16px;
-    opacity: 0.5;
+  .empty-icon-container {
+    width: 100px;
+    height: 100px;
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    
+    ion-icon {
+      font-size: 50px;
+      color: var(--ion-color-primary);
+    }
   }
   
   h3 {
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--app-text-color);
     margin-bottom: 8px;
-    color: var(--ion-color-dark);
+  }
+  
+  p {
+    color: var(--app-text-muted);
+    font-size: 15px;
+    margin-bottom: 24px;
+    max-width: 80%;
+  }
+  
+  .create-btn {
+    --box-shadow: var(--app-shadow-primary);
   }
 }

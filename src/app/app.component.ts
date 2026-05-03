@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ThemeService } from './core/services/theme.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,16 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class AppComponent {
-  constructor() {}
+  constructor(
+    private themeService: ThemeService,
+    private platform: Platform
+  ) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.themeService.initializeTheme();
+    });
+  }
 }

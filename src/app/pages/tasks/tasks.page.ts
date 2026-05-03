@@ -13,6 +13,8 @@ import { RemoteConfigService } from '../../core/services/remote-config.service';
 import { TaskItemComponent } from '../../shared/components/task-item/task-item.component';
 import { TaskFormComponent } from '../../shared/components/task-form/task-form.component';
 
+import { ThemeService } from '../../core/services/theme.service';
+
 @Component({
   selector: 'app-tasks',
   standalone: true,
@@ -36,7 +38,8 @@ export class TasksPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public themeService: ThemeService
   ) {}
 
   ngOnInit() {
@@ -61,6 +64,14 @@ export class TasksPage implements OnInit {
 
   onSearch(event: any) {
     this.searchQuery$.next(event.target.value || '');
+  }
+
+  getPendingCount(tasks: Task[] | null): number {
+    return tasks ? tasks.filter(t => !t.completed).length : 0;
+  }
+
+  getCompletedCount(tasks: Task[] | null): number {
+    return tasks ? tasks.filter(t => t.completed).length : 0;
   }
 
   trackByFn(index: number, task: Task): string {

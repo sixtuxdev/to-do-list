@@ -1,18 +1,19 @@
 <div class="category-container">
   <div 
     *ngFor="let category of categories$ | async" 
-    class="category-badge"
+    class="premium-category-badge"
     [class.selected]="value === category.id"
     [style.--cat-color]="category.color"
     (click)="selectCategory(category.id)">
     <ion-icon [name]="category.icon"></ion-icon>
     <span>{{ category.name }}</span>
   </div>
+  
   <div 
-    class="category-badge clear-badge"
+    class="premium-category-badge clear-badge fade-in"
     *ngIf="value"
     (click)="selectCategory(null)">
-    <ion-icon name="close-circle-outline"></ion-icon>
-    <span>Quitar</span>
+    <ion-icon name="close"></ion-icon>
+    <span>Quitar filtro</span>
   </div>
 </div>

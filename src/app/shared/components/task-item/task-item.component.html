@@ -1,34 +1,39 @@
-<ion-item-sliding #slidingItem>
-  <ion-item [button]="true" (click)="onEdit()" class="task-item" [class.completed]="task.completed">
+<ion-item-sliding #slidingItem class="premium-sliding-item">
+  <ion-item [button]="true" (click)="onEdit()" class="task-item premium-card" [class.completed]="task.completed" lines="none">
     
-    <ion-checkbox 
-      slot="start" 
-      [checked]="task.completed" 
-      (ionChange)="onToggleCompletion($event)"
-      (click)="$event.stopPropagation()">
-    </ion-checkbox>
+    <div slot="start" class="checkbox-container" (click)="$event.stopPropagation(); onToggleCompletion($event)">
+      <div class="custom-checkbox" [class.checked]="task.completed">
+        <ion-icon name="checkmark-outline" *ngIf="task.completed"></ion-icon>
+      </div>
+    </div>
     
-    <ion-label>
-      <h2 [class.strikethrough]="task.completed">{{ task.title }}</h2>
-      <p *ngIf="task.description" class="ion-text-wrap">{{ task.description }}</p>
+    <ion-label class="task-content">
+      <h2 [class.strikethrough]="task.completed" class="task-title">{{ task.title }}</h2>
+      <p *ngIf="task.description" class="task-desc ion-text-wrap">{{ task.description }}</p>
       
       <div class="task-meta">
-        <ion-badge [color]="getPriorityColor(task.priority)" class="priority-badge">
-          {{ task.priority | uppercase }}
-        </ion-badge>
+        <div class="priority-badge" [class]="task.priority">
+          <span class="dot"></span>
+          {{ task.priority === 'low' ? 'Baja' : task.priority === 'medium' ? 'Media' : 'Alta' }}
+        </div>
         
-        <ion-note *ngIf="task.dueDate" class="due-date" [color]="isOverdue(task.dueDate) && !task.completed ? 'danger' : 'medium'">
+        <div *ngIf="task.dueDate" class="due-date" [class.overdue]="isOverdue(task.dueDate) && !task.completed">
           <ion-icon name="calendar-outline"></ion-icon>
-          {{ task.dueDate | date:'mediumDate' }}
-        </ion-note>
+          <span>{{ task.dueDate | date:'MMM d' }}</span>
+        </div>
       </div>
     </ion-label>
+
+    <ion-icon slot="end" name="chevron-forward-outline" class="nav-icon"></ion-icon>
 
   </ion-item>
 
   <ion-item-options side="end">
-    <ion-item-option color="danger" (click)="onDelete(slidingItem)">
-      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+    <ion-item-option class="delete-option" color="danger" (click)="onDelete(slidingItem)">
+      <div class="option-content">
+        <ion-icon name="trash-outline"></ion-icon>
+        <span>Eliminar</span>
+      </div>
     </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>
