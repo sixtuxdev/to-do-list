@@ -3,6 +3,18 @@
   <ion-title>Mis Tareas</ion-title>
 
   <ion-buttons slot="end">
+    <!-- Dark Mode -->
+    <ion-button
+      *ngIf="enableDarkMode$ | async"
+      fill="clear"
+      class="theme-toggle-btn"
+      (click)="themeService.toggleTheme()">
+
+      <ion-icon
+        slot="icon-only"
+        [name]="(themeService.isDarkMode$ | async) ? 'moon' : 'moon-outline'">
+      </ion-icon>
+    </ion-button>    
     <ion-button *ngIf="enableCategories$ | async" (click)="goToCategories()">
       <ion-icon slot="icon-only" name="folder-open-outline"></ion-icon>
     </ion-button>
@@ -16,6 +28,7 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   
+
   <!-- Stats Summary -->
   <div class="stats-container fade-in" *ngIf="filteredTasks$ | async as tasks">
     <div class="stat-card">

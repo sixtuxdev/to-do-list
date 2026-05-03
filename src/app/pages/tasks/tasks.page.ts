@@ -30,6 +30,7 @@ export class TasksPage implements OnInit {
   filteredTasks$!: Observable<Task[]>;
   categories$!: Observable<Category[]>;
   enableCategories$!: Observable<boolean>;
+  enableDarkMode$!: Observable<boolean>;
 
   constructor(
     private taskService: TaskService,
@@ -45,6 +46,7 @@ export class TasksPage implements OnInit {
   ngOnInit() {
     this.categories$ = this.categoryService.getCategories();
     this.enableCategories$ = this.remoteConfigService.enableCategories$;
+    this.enableDarkMode$ = this.remoteConfigService.enableDarkMode$;
     
     this.filteredTasks$ = combineLatest([
       this.searchQuery$,

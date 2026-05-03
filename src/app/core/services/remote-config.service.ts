@@ -11,39 +11,46 @@ export class RemoteConfigService {
   private enableCategoriesSubject = new BehaviorSubject<boolean>(true); // Default true
   public enableCategories$ = this.enableCategoriesSubject.asObservable();
 
+  private enableDarkModeSubject = new BehaviorSubject<boolean>(false); // Default false for safety
+  public enableDarkMode$ = this.enableDarkModeSubject.asObservable();
+
   constructor() {
     this.initFirebase();
   }
 
   private async initFirebase() {
     try {
-      // Solo inicializa si no existe (importante para evitar errores en HMR o recargas)
       const app = getApps().length === 0 ? initializeApp(environment.firebase) : getApp();
       const remoteConfig = getRemoteConfig(app);
       
-      // En desarrollo, reducimos el tiempo de caché para pruebas
       remoteConfig.settings.minimumFetchIntervalMillis = environment.production ? 3600000 : 10000;
       
-      // Valores por defecto antes de hacer el fetch
       remoteConfig.defaultConfig = {
-        'enable_categories': true
+        'enable_categories': true,
+        'enable_dark_mode': false
       };
 
-      // Obtener y activar los valores de Firebase
       await fetchAndActivate(remoteConfig);
       
       const enableCategories = getValue(remoteConfig, 'enable_categories').asBoolean();
       this.enableCategoriesSubject.next(enableCategories);
+
+      const enableDarkMode = getValue(remoteConfig, 'enable_dark_mode').asBoolean();
+      this.enableDarkModeSubject.next(enableDarkMode);
       
-      console.log('Remote Config cargado: enable_categories =', enableCategories);
+      console.log('Remote Config cargado: enable_categories =', enableCategories, 'enable_dark_mode =', enableDarkMode);
     } catch (error) {
       console.warn('Firebase Remote Config falló. Usando valores por defecto.', error);
-      // Fallback seguro en caso de error de red o falta de configuración real
       this.enableCategoriesSubject.next(true);
+      this.enableDarkModeSubject.next(false);
     }
   }
 
   public get enableCategories(): boolean {
     return this.enableCategoriesSubject.getValue();
+  }
+
+  public get enableDarkMode(): boolean {
+    return this.enableDarkModeSubject.getValue();
   }
 }
