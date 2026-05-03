@@ -38,7 +38,9 @@ export class RemoteConfigService {
       const enableDarkMode = getValue(remoteConfig, 'enable_dark_mode').asBoolean();
       this.enableDarkModeSubject.next(enableDarkMode);
       
-      console.log('Remote Config cargado: enable_categories =', enableCategories, 'enable_dark_mode =', enableDarkMode);
+      if (!environment.production) {
+        console.log('Remote Config cargado: enable_categories =', enableCategories, 'enable_dark_mode =', enableDarkMode);
+      }
     } catch (error) {
       console.warn('Firebase Remote Config falló. Usando valores por defecto.', error);
       this.enableCategoriesSubject.next(true);
