@@ -97,11 +97,6 @@ La aplicación implementa Firebase Remote Config. Se utiliza una cuenta "demo" p
 - **Si es `false`:** La opción de modo oscuro permanece oculta para el usuario.
 
 
-**¿Cómo actualizarlo?**
-1. Accede a tu consola de Firebase > Configuración Remota (Remote Config).
-2. Crea el parámetro `enable_categories` (Booleano).
-3. Publica los cambios y la aplicación adaptará su comportamiento al iniciar.
-
 ---
 
 ## 📱 Compilación Nativa Híbrida (Android / iOS)
