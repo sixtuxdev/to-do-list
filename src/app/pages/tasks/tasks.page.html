@@ -1,31 +1,17 @@
 <ion-header class="ion-no-border app-gradient-header">
-  <ion-toolbar color="transparent">
-    <ion-title class="ion-text-start">
-      <div class="header-title">
-        <span class="greeting">Hola,</span>
-        <span class="subtitle">Tus Tareas</span>
-      </div>
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="themeService.toggleTheme()">
-        <ion-icon slot="icon-only" [name]="(themeService.isDarkMode$ | async) ? 'sunny-outline' : 'moon-outline'"></ion-icon>
-      </ion-button>
-      <ion-button *ngIf="enableCategories$ | async" (click)="goToCategories()">
-        <ion-icon slot="icon-only" name="grid-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-  
-  <div class="search-container ion-padding-horizontal ion-padding-bottom">
-    <ion-searchbar 
-      class="premium-searchbar"
-      animated="true" 
-      placeholder="Buscar tareas..." 
-      searchIcon="search-outline"
-      (ionInput)="onSearch($event)"
-      [debounce]="300">
-    </ion-searchbar>
-  </div>
+<ion-toolbar color="primary">
+  <ion-title>Mis Tareas</ion-title>
+
+  <ion-buttons slot="end">
+    <ion-button *ngIf="enableCategories$ | async" (click)="goToCategories()">
+      <ion-icon slot="icon-only" name="folder-open-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button (click)="openTaskModal()">
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
