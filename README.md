@@ -92,6 +92,11 @@ La aplicación implementa Firebase Remote Config. Se utiliza una cuenta "demo" p
 - **Si es `true`:** La aplicación muestra un botón para acceder a las categorías en el menú superior, activa el filtro rápido en la pantalla de tareas mediante *chips* interactivos, y habilita el selector visual en el modal de creación.
 - **Si es `false`:** Toda la funcionalidad y UI relacionada con las categorías se oculta automáticamente de forma reactiva.
 
+### Feature Flag: `enable_dark_mode`
+- **Si es `true`:** La aplicación muestra un botón en ion-toolbar que permite activar o desactivar el modo oscuro.
+- **Si es `false`:** La opción de modo oscuro permanece oculta para el usuario.
+
+
 **¿Cómo actualizarlo?**
 1. Accede a tu consola de Firebase > Configuración Remota (Remote Config).
 2. Crea el parámetro `enable_categories` (Booleano).
