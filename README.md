@@ -113,5 +113,33 @@ ionic cordova run android
 ```
 *(Para exportables APK/IPA revisa la guía adjunta).*
 
+## 1. ¿Cuáles fueron los principales desafíos que enfrentaste al implementar las nuevas funcionalidades?
+
+Uno de los retos principales fue lograr que todo funcionara correctamente usando Cordova junto con versiones más modernas de Angular e Ionic. Ajustar la configuración para que la app compilara bien y funcionara dentro del entorno nativo requirió especial cuidado.
+
+También fue un desafío manejar Firebase Remote Config, ya que al cargar la aplicación podía haber pequeños retrasos mientras llegaban los datos. Para evitar que la interfaz se viera inestable, utilicé valores por defecto y manejo reactivo con RxJS.
+
+Por último, la persistencia de datos debía funcionar tanto en navegador como en dispositivo móvil, así que utilicé Ionic Storage para abstraer esa diferencia y mantener una sola lógica.
+
+---
+
+## 2. ¿Qué técnicas de optimización de rendimiento aplicaste y por qué?
+
+Principalmente enfoqué la optimización en evitar renderizados innecesarios y manejar bien la memoria.
+
+Usé `OnPush` para que Angular solo actualice los componentes cuando realmente hay cambios, lo que mejora bastante el rendimiento. También implementé `trackBy` en las listas para evitar que se reconstruyan elementos del DOM sin necesidad.
+
+Además, trabajé con el `async pipe` en lugar de suscripciones manuales para evitar fugas de memoria. Y utilicé carga perezosa (lazy loading) en las páginas para que la aplicación cargue más rápido desde el inicio.
+
+---
+
+## 3. ¿Cómo aseguraste la calidad y mantenibilidad del código?
+
+Me enfoqué en mantener el código organizado y fácil de escalar. Separé la lógica en servicios y componentes, evitando mezclar responsabilidades.
+
+Cada servicio tiene una función clara (tareas, categorías, almacenamiento), lo que facilita cambios futuros sin afectar todo el proyecto. También trabajé con tipado fuerte en TypeScript para prevenir errores.
+
+Finalmente, traté de hacer componentes reutilizables y desacoplados, lo que hace más sencillo mantener y extender la aplicación en el tiempo.
+
 ---
 *Desarrollado con Arquitectura Clean + Angular Moderno + Ionic.*
