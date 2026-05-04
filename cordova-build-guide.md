@@ -12,6 +12,174 @@ Este proyecto está configurado para utilizar **Cordova** como motor nativo. A c
   - Agregar a la variable `PATH`: `%ANDROID_HOME%\tools`, `%ANDROID_HOME%\platform-tools` y la ruta de Java JDK (versión 17 recomendada para Cordova actual).
 - **Gradle**: Tener Gradle en el `PATH` o usar el *wrapper* incluido.
 
+---
+
+# 📁 Ruta del Proyecto
+
+```txt
+E:\accenture\to-do-list
+```
+
+# 📦 Android Build Tools
+
+```txt
+C:\Android\Sdk\build-tools\36.1.0
+```
+
+---
+
+# ✅ Paso 1 — Entrar al Proyecto
+
+```powershell
+cd E:\accenture\to-do-list
+```
+
+---
+
+# ✅ Paso 2 — Generar APK Release (Unsigned)
+
+```powershell
+cordova build android --release --packageType=apk
+```
+
+Esto genera:
+
+```txt
+platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk
+```
+
+---
+
+# ✅ Paso 3 — Crear Keystore (Solo la Primera Vez)
+
+> Si ya tienes el archivo `.keystore`, omite este paso.
+
+```powershell
+keytool -genkey -v -keystore todo-list-release.keystore -alias todo-list -keyalg RSA -keysize 2048 -validity 10000
+```
+
+Te solicitará:
+
+- Contraseña
+- Nombre
+- Organización
+- País
+
+⚠️ Guarda muy bien:
+
+- `todo-list-release.keystore`
+- Contraseña
+- Alias `todo-list`
+
+---
+
+# ✅ Paso 4 — Alinear APK con zipalign
+
+```powershell
+C:\Android\Sdk\build-tools\36.1.0\zipalign.exe -p -f 4 platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk app-release-aligned.apk
+```
+
+Esto genera:
+
+```txt
+app-release-aligned.apk
+```
+
+---
+
+# ✅ Paso 5 — Firmar APK
+
+```powershell
+C:\Android\Sdk\build-tools\36.1.0\apksigner.bat sign --ks todo-list-release.keystore --ks-key-alias todo-list --out app-release-signed.apk app-release-aligned.apk
+```
+
+Ingresar la contraseña del keystore.
+
+---
+
+# ✅ Paso 6 — Verificar Firma
+
+```powershell
+C:\Android\Sdk\build-tools\36.1.0\apksigner.bat verify --verbose --print-certs app-release-signed.apk
+```
+
+Debe mostrar:
+
+```txt
+Verified
+```
+
+---
+
+# ✅ Paso 7 — Verificar zipalign
+
+```powershell
+C:\Android\Sdk\build-tools\36.1.0\zipalign.exe -c -p 4 app-release-signed.apk
+```
+
+Si no muestra errores, está correcto.
+
+---
+
+# 📱 APK Final Listo para Instalar
+
+```txt
+app-release-signed.apk
+```
+
+---
+
+# ⚠️ Si Android Dice "Paquete no válido"
+
+Realiza lo siguiente:
+
+## 1. Desinstalar versión anterior de la app
+
+## 2. Activar instalación de apps desconocidas
+
+Configuración del celular:
+
+```txt
+Permitir instalar aplicaciones desconocidas
+```
+
+## 3. Instalar nuevamente el APK firmado
+
+---
+
+# 🔁 Flujo Rápido para Nuevas Versiones
+
+```powershell
+cordova build android --release --packageType=apk
+zipalign
+apksigner
+```
+
+---
+
+# 🔐 Recomendación Importante
+
+Haz copia de seguridad del archivo:
+
+```txt
+todo-list-release.keystore
+```
+
+Sin ese archivo **no podrás actualizar la aplicación en Google Play Store**.
+
+---
+
+# 🛠️ Tecnologías Usadas
+
+- Ionic 7.2.1
+- Angular
+- Apache Cordova
+- Android SDK
+- Gradle
+- Java JDK 17
+
+---
+
 ### Para iOS (Requiere macOS)
 - **Xcode**: Instalado desde la Mac App Store.
 - **Command Line Tools**: Ejecutar `xcode-select --install`.
